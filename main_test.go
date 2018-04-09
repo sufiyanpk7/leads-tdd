@@ -1,10 +1,10 @@
 package main_test
 
 import (
+	"github.com/zsgilber/leads-tdd/main"
+	"log"
 	"os"
 	"testing"
-
-	"."
 )
 
 var a main.App
@@ -32,14 +32,14 @@ func ensureTableExists() {
 }
 
 func clearTable() {
-	a.DB.Exec("DELETE FROM products")
-	a.DB.Exec("ALTER SEQUENCE products_id_seq RESTART WITH 1")
+	a.DB.Exec("DELETE FROM leads")
+	a.DB.Exec("ALTER SEQUENCE leads_id_seq RESTART WITH 1")
 }
 
 const tableCreationQuery = `CREATE TABLE IF NOT EXISTS leads
 (
-id SERIAL,
-name TEXT NOT NULL,
-price NUMERIC(10,2) NOT NULL DEFAULT 0.00,
-CONSTRAINT products_pkey PRIMARY KEY (id)
+    id bigint NOT NULL,
+    first_name text NOT NULL,
+    last_name text NOT NULL,
+    CONSTRAINT leads_pkey PRIMARY KEY (id)
 )`
