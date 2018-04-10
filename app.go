@@ -3,9 +3,10 @@ package main
 import (
 	"database/sql"
 	"fmt"
+	"log"
+
 	"github.com/gorilla/mux"
 	_ "github.com/lib/pq"
-	"log"
 )
 
 type App struct {
@@ -15,7 +16,7 @@ type App struct {
 
 func (a *App) Initialize(user, password, dbname string) {
 	connectionString :=
-		fmt.Sprintf("user=%s password=%s dbname=%s", user, password, dbname)
+		fmt.Sprintf("user=%s password=%s dbname=%s sslmode=disable", user, password, dbname)
 
 	var err error
 	a.DB, err = sql.Open("postgres", connectionString)

@@ -1,10 +1,11 @@
 package main_test
 
 import (
-	"github.com/zsgilber/leads-tdd/main"
 	"log"
 	"os"
 	"testing"
+
+	"."
 )
 
 var a main.App
@@ -32,11 +33,11 @@ func ensureTableExists() {
 }
 
 func clearTable() {
-	a.DB.Exec("DELETE FROM leads")
-	a.DB.Exec("ALTER SEQUENCE leads_id_seq RESTART WITH 1")
+	a.DB.Exec("DELETE FROM leads_test.leads")
+	a.DB.Exec("ALTER SEQUENCE leads_test.leads_id_seq RESTART WITH 1")
 }
 
-const tableCreationQuery = `CREATE TABLE IF NOT EXISTS leads
+const tableCreationQuery = `CREATE TABLE IF NOT EXISTS leads_test.leads
 (
     id bigint NOT NULL,
     first_name text NOT NULL,
