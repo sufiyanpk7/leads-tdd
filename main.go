@@ -21,10 +21,7 @@ func main() {
 	}
 	a := App{}
 	log.Printf("Listening on %s...\n", addr)
-	a.Initialize(
-		os.Getenv("APP_DB_USERNAME"),
-		os.Getenv("APP_DB_PASSWORD"),
-		os.Getenv("APP_DB_NAME"))
+	a.Initialize(os.Getenv("DATABASE_URL"))
 
 	a.Run(addr)
 }
