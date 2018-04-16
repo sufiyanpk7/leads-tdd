@@ -11,7 +11,7 @@ type lead struct {
 }
 
 func (l *lead) getLead(db *sql.DB) error {
-	return db.QueryRow("SELECT first_name, last_name FROM leads_test.leads WHERE id=$1",
+	return db.QueryRow("SELECT first_name, last_name FROM leads.leads WHERE id=$1",
 		l.ID).Scan(&l.Firstname, &l.Lastname)
 }
 
