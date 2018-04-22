@@ -29,6 +29,11 @@ func (l *lead) deleteLead(db *sql.DB) error {
 	return err
 }
 
+func deleteLeads(db *sql.DB, leadsToDelete []int) error {
+	_, err := db.Exec("DELETE FROM leads.leads WHERE id IN $1", leadsToDelete)
+	return err
+}
+
 func (l *lead) createLead(db *sql.DB) error {
 	err := db.QueryRow(
 		"INSERT INTO leads.leads(first_name, last_name) VALUES($1, $2) RETURNING id",
