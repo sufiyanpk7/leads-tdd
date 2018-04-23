@@ -38,7 +38,7 @@
   unused-packages = true
 
 [metadata.heroku]
-  root-package = "github.com/zsgilber/leads-tdd"
+  root-package = "github.com/zsgilber/leads-tdd/cmd/leadstdd"
   go-version = "go1.9.4"
   install = ["./..."]
   ensure = "false"
