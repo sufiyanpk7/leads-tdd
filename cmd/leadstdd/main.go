@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"log"
 	"os"
+
+	"github.com/zsgilber/leads-tdd-copy/pkg/api"
 )
 
 func determineListenAddress() (string, error) {
@@ -19,7 +21,7 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	a := App{}
+	a := api.App{}
 	log.Printf("Listening on %s...\n", addr)
 	a.Initialize(os.Getenv("DATABASE_URL"))
 
