@@ -10,17 +10,14 @@ import (
 	"strconv"
 	"testing"
 
-	"."
+	"github.com/zsgilber/leads-tdd/pkg/api"
 )
 
-var a main.App
+var a api.App
 
 func TestMain(m *testing.M) {
-	a = main.App{}
-	a.Initialize(
-		os.Getenv("APP_DB_USERNAME"),
-		os.Getenv("APP_DB_PASSWORD"),
-		os.Getenv("APP_DB_NAME"))
+	a = api.App{}
+	a.Initialize(os.Getenv("DATABASE_URL"))
 
 	ensureTableExists()
 
