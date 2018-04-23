@@ -5,7 +5,11 @@ import (
 	"log"
 	"os"
 
+<<<<<<< HEAD:cmd/leadstdd/main.go
 	"github.com/zsgilber/leads-tdd-copy/pkg/api"
+=======
+	"github.com/zsgilber/leads-tdd/pkg/api"
+>>>>>>> master:cmd/leadstdd/main.go
 )
 
 func determineListenAddress() (string, error) {
@@ -22,6 +26,11 @@ func main() {
 		log.Fatal(err)
 	}
 	a := api.App{}
+<<<<<<< HEAD:cmd/leadstdd/main.go
+=======
+	dburl := os.Getenv("DATABASE_URL")
+	log.Printf("URL is %s\n", dburl)
+>>>>>>> master:cmd/leadstdd/main.go
 	log.Printf("Listening on %s...\n", addr)
 	a.Initialize(os.Getenv("DATABASE_URL"))
 
