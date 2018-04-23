@@ -22,6 +22,8 @@ func main() {
 		log.Fatal(err)
 	}
 	a := api.App{}
+	dburl := os.Getenv("DATABASE_URL")
+	log.Printf("URL is %s\n", dburl)
 	log.Printf("Listening on %s...\n", addr)
 	a.Initialize(os.Getenv("DATABASE_URL"))
 

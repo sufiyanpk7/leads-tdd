@@ -151,11 +151,11 @@ func TestDeleteLead(t *testing.T) {
 }
 
 func clearTable() {
-	a.DB.Exec("DELETE FROM leads_test.leads")
-	a.DB.Exec("ALTER SEQUENCE leads_test.leads_id_seq RESTART WITH 1")
+	a.DB.Exec("DELETE FROM leads.leads")
+	a.DB.Exec("ALTER SEQUENCE leads.leads_id_seq RESTART WITH 1")
 }
 
-const tableCreationQuery = `CREATE TABLE IF NOT EXISTS leads_test.leads
+const tableCreationQuery = `CREATE TABLE IF NOT EXISTS leads.leads
 (
     id bigint NOT NULL,
     first_name text NOT NULL,
@@ -181,6 +181,6 @@ func addLeads(count int) {
 	}
 
 	for i := 0; i < count; i++ {
-		a.DB.Exec("INSERT INTO leads_test.leads(first_name, last_name) VALUES($1, $2)", "Test", "Lead "+strconv.Itoa(i))
+		a.DB.Exec("INSERT INTO leads.leads(first_name, last_name) VALUES($1, $2)", "Test", "Lead "+strconv.Itoa(i))
 	}
 }
