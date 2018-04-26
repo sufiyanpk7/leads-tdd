@@ -136,6 +136,23 @@ func (a *App) deleteLead(w http.ResponseWriter, r *http.Request) {
 	respondWithJSON(w, http.StatusOK, map[string]string{"result": "success"})
 }
 
+func (a *App) deleteLeads(w http.ResponseWriter, r *http.Request) {
+	var l2d leadsToDelete
+	decoder := json.NewDecoder(r.Body)
+	if err := decoder.Decode(&l2d); err != nil {
+		respondWithError(w, http.StatusBadRequest, "Invalid request payload")
+		return
+	}
+	defer r.Body.Close()
+
+	if err := l2d.deleteLeads(a.DB); err != nil {
+		respondWithError(w, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	respondWithJSON(w, http.StatusCreated, map[string]string{"result": "success"})
+}
+
 func respondWithError(w http.ResponseWriter, code int, message string) {
 	respondWithJSON(w, code, map[string]string{"error": message})
 }
@@ -154,4 +171,5 @@ func (a *App) initializeRoutes() {
 	a.Router.HandleFunc("/lead/{id:[0-9]+}", a.getLead).Methods("GET")
 	a.Router.HandleFunc("/lead/{id:[0-9]+}", a.updateLead).Methods("PUT")
 	a.Router.HandleFunc("/lead/{id:[0-9]+}", a.deleteLead).Methods("DELETE")
+	a.Router.HandleFunc("/leads/delete", a.deleteLeads).Methods("POST")
 }

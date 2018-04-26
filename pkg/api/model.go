@@ -2,12 +2,18 @@ package api
 
 import (
 	"database/sql"
+
+	"github.com/lib/pq"
 )
 
 type lead struct {
 	ID        int    `json:"id"`
 	Firstname string `json:"firstname"`
 	Lastname  string `json:"lastname"`
+}
+
+type leadsToDelete struct {
+	Ids []int `json:"idsToDelete"`
 }
 
 func (l *lead) getLead(db *sql.DB) error {
@@ -29,8 +35,11 @@ func (l *lead) deleteLead(db *sql.DB) error {
 	return err
 }
 
-func deleteLeads(db *sql.DB, leadsToDelete []int) error {
-	_, err := db.Exec("DELETE FROM leads.leads WHERE id IN $1", leadsToDelete)
+func (l2d *leadsToDelete) deleteLeads(db *sql.DB) error {
+	//_, err := db.Exec("DELETE FROM leads.leads WHERE id IN $1", leadsToDelete)
+	stmt, err := db.Prepare("DELETE FROM leads.leads WHERE id=ANY($1)")
+	_, err = stmt.Exec(pq.Array(l2d.Ids))
+
 	return err
 }
 
