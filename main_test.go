@@ -31,7 +31,7 @@ func TestMain(m *testing.M) {
 func TestEmptyTable(t *testing.T) {
 	clearTable()
 
-	req, _ := http.NewRequest("GET", "/leads", nil)
+	req, _ := http.NewRequest("GET", "/api/leads", nil)
 	response := executeRequest(req)
 
 	checkResponseCode(t, http.StatusOK, response.Code)
@@ -50,7 +50,7 @@ func ensureTableExists() {
 func TestGetNonExistentLead(t *testing.T) {
 	clearTable()
 
-	req, _ := http.NewRequest("GET", "/lead/11", nil)
+	req, _ := http.NewRequest("GET", "/api/lead/11", nil)
 	response := executeRequest(req)
 
 	checkResponseCode(t, http.StatusNotFound, response.Code)
@@ -67,7 +67,7 @@ func TestCreateLead(t *testing.T) {
 
 	payload := []byte(`{"firstname":"Test","lastname":"Lead"}`)
 
-	req, _ := http.NewRequest("POST", "/lead", bytes.NewBuffer(payload))
+	req, _ := http.NewRequest("POST", "/api/lead", bytes.NewBuffer(payload))
 	response := executeRequest(req)
 
 	checkResponseCode(t, http.StatusCreated, response.Code)
@@ -94,7 +94,7 @@ func TestGetLead(t *testing.T) {
 	clearTable()
 	addLeads(1)
 
-	req, _ := http.NewRequest("GET", "/lead/1", nil)
+	req, _ := http.NewRequest("GET", "/api/lead/1", nil)
 	response := executeRequest(req)
 
 	checkResponseCode(t, http.StatusOK, response.Code)
@@ -104,14 +104,14 @@ func TestUpdateLead(t *testing.T) {
 	clearTable()
 	addLeads(1)
 
-	req, _ := http.NewRequest("GET", "/lead/1", nil)
+	req, _ := http.NewRequest("GET", "/api/lead/1", nil)
 	response := executeRequest(req)
 	var originalLead map[string]interface{}
 	json.Unmarshal(response.Body.Bytes(), &originalLead)
 
 	payload := []byte(`{"firstname":"Test - updated name","lastname":"Lead"}`)
 
-	req, _ = http.NewRequest("PUT", "/lead/1", bytes.NewBuffer(payload))
+	req, _ = http.NewRequest("PUT", "/api/lead/1", bytes.NewBuffer(payload))
 	response = executeRequest(req)
 
 	checkResponseCode(t, http.StatusOK, response.Code)
@@ -136,16 +136,16 @@ func TestDeleteLead(t *testing.T) {
 	clearTable()
 	addLeads(1)
 
-	req, _ := http.NewRequest("GET", "/lead/1", nil)
+	req, _ := http.NewRequest("GET", "/api/lead/1", nil)
 	response := executeRequest(req)
 	checkResponseCode(t, http.StatusOK, response.Code)
 
-	req, _ = http.NewRequest("DELETE", "/lead/1", nil)
+	req, _ = http.NewRequest("DELETE", "/api/lead/1", nil)
 	response = executeRequest(req)
 
 	checkResponseCode(t, http.StatusOK, response.Code)
 
-	req, _ = http.NewRequest("GET", "/lead/1", nil)
+	req, _ = http.NewRequest("GET", "/api/lead/1", nil)
 	response = executeRequest(req)
 	checkResponseCode(t, http.StatusNotFound, response.Code)
 }
