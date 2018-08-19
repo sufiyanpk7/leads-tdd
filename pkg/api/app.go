@@ -11,11 +11,13 @@ import (
 	_ "github.com/lib/pq"
 )
 
+// App is the main application struct
 type App struct {
 	Router *mux.Router
 	DB     *sql.DB
 }
 
+// Initialize connects to db and sets up routing
 func (a *App) Initialize(databaseURL string) {
 	// commenting out for Heroku Postgres service
 	// connectionString :=
@@ -24,13 +26,14 @@ func (a *App) Initialize(databaseURL string) {
 	var err error
 	a.DB, err = sql.Open("postgres", databaseURL)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("Could not connect to postgres: %+v", err)
 	}
 
 	a.Router = mux.NewRouter()
 	a.initializeRoutes()
 }
 
+// Run runs the app
 func (a *App) Run(addr string) {
 	log.Fatal(http.ListenAndServe(addr, a.Router))
 }
@@ -166,10 +169,10 @@ func respondWithJSON(w http.ResponseWriter, code int, payload interface{}) {
 }
 
 func (a *App) initializeRoutes() {
-	a.Router.HandleFunc("/leads", a.getLeads).Methods("GET")
-	a.Router.HandleFunc("/lead", a.createLead).Methods("POST")
-	a.Router.HandleFunc("/lead/{id:[0-9]+}", a.getLead).Methods("GET")
-	a.Router.HandleFunc("/lead/{id:[0-9]+}", a.updateLead).Methods("PUT")
-	a.Router.HandleFunc("/lead/{id:[0-9]+}", a.deleteLead).Methods("DELETE")
-	a.Router.HandleFunc("/leads/delete", a.deleteLeads).Methods("POST")
+	a.Router.HandleFunc("/api/leads", a.getLeads).Methods("GET")
+	a.Router.HandleFunc("/api/lead", a.createLead).Methods("POST")
+	a.Router.HandleFunc("/api/lead/{id:[0-9]+}", a.getLead).Methods("GET")
+	a.Router.HandleFunc("/api/lead/{id:[0-9]+}", a.updateLead).Methods("PUT")
+	a.Router.HandleFunc("/api/lead/{id:[0-9]+}", a.deleteLead).Methods("DELETE")
+	a.Router.HandleFunc("/api/leads/delete", a.deleteLeads).Methods("POST")
 }
