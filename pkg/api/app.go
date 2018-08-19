@@ -11,11 +11,13 @@ import (
 	_ "github.com/lib/pq"
 )
 
+// App is the main application struct
 type App struct {
 	Router *mux.Router
 	DB     *sql.DB
 }
 
+// Initialize connects to db and sets up routing
 func (a *App) Initialize(databaseURL string) {
 	// commenting out for Heroku Postgres service
 	// connectionString :=
@@ -24,13 +26,14 @@ func (a *App) Initialize(databaseURL string) {
 	var err error
 	a.DB, err = sql.Open("postgres", databaseURL)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("Could not connect to postgres: %+v", err)
 	}
 
 	a.Router = mux.NewRouter()
 	a.initializeRoutes()
 }
 
+// Run runs the app
 func (a *App) Run(addr string) {
 	log.Fatal(http.ListenAndServe(addr, a.Router))
 }
